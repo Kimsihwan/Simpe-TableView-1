@@ -39,6 +39,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             return "\(section) Section Header"
         }
     }
+    
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == 0 {
             return "\(section) Section Footer"
@@ -51,16 +52,25 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let identifier = "Cell"
         let cell = myTableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
         
+        if indexPath.section == 0 {
+            let myImage = UIImage(named:"cat.png")
+            cell.imageView?.image = myImage
+        } else{
+            let myImage = UIImage(named:"Monkey.jpg")
+            cell.imageView?.image = myImage
+        }
+        
+        
         // cell에 image 넣기
-        let myImage = UIImage(named:"cat.png")
-        cell.imageView?.image = myImage
+//        let myImage = UIImage(named:"cat.png")
+//        cell.imageView?.image = myImage
         
         // cell에 text 넣기
         cell.textLabel?.text = animals[indexPath.row]
         
         // cell에 detailText 넣기
-        cell.detailTextLabel?.text = country[indexPath.row]
-        
+//        cell.detailTextLabel?.text = country[indexPath.row]
+        cell.detailTextLabel?.text = String(indexPath.row)
         return cell
     }
     
@@ -74,10 +84,27 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         print("I selected \(mySection) Section \(myRow) Row")
         print(myAnimal)
         
-        let alert = UIAlertController(title: myAnimal, message: "Section \(mySection), Row \(myRow)", preferredStyle: .actionSheet)
+//        let alert = UIAlertController(title: myAnimal, message: "Section \(mySection), Row \(myRow)", preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "동물농장", message: myAnimal, preferredStyle: .actionSheet)
+        
+        let okAction = UIAlertAction(title: "확인", style: .default, handler : {(myaction: UIAlertAction) -> Void in
+            
+        let subAlert = UIAlertController(title: "SubAlert", message: "Selection\(mySection) Row\(myRow)", preferredStyle: .alert)
+            
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            subAlert.addAction(cancel)
+            self.present(subAlert, animated: true, completion: nil)
+            
+        })
+        
+
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alert.addAction(cancelAction)
+        alert.addAction(okAction)
+        
+        
         present(alert, animated: true, completion: nil)
+        
     }
 }
 
